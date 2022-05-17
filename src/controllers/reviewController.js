@@ -128,14 +128,17 @@ const updateReview = async function (req, res) {
       updateData.reviewedBy = reviewedBy
     }
 
-    if (rating && typeof rating === 'number' && rating >= 1 && rating <= 5) {
-      updateData.rating = rating
+    if (rating) {
+      
+      if (rating && typeof rating === 'number' && rating >= 1 && rating <= 5) {
+        updateData.rating = rating
+      }
+
+      if (!(rating && rating >= 1 && rating <= 5)) {
+        return res.status(400).send({ status: false, message: "rating should be in range 1 to 5 " })
+      }
     }
 
-    if (!(rating >= 1 && rating <= 5)) {
-      return res.status(400).send({ status: false, message: "rating should be in range 1 to 5 " })
-    }
-    
     if (!isValid(reviewedBy)) {
       requestBody.reviewedBy = "Guest"
     }
@@ -213,7 +216,7 @@ const deleteReviewByBookIdAndReviewById = async function (req, res) {
 
     const updateBookReview = await booksModel.findByIdAndUpdate({ _id: bookId }, { reviews: bookReviewCount }, { new: true }).lean()
 
-    res.status(200).send({ status: true, message: "review has been successfully deleted"})
+    res.status(200).send({ status: true, message: "review has been successfully deleted" })
 
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message })

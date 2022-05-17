@@ -17,7 +17,7 @@ const {createReview,updateReview, deleteReviewByBookIdAndReviewById} =require('.
 router.post('/books',authentication,createBooks);
 router.get('/books', authentication, GetFilteredBook);
 router.get('/books/:bookId', authentication, getBooksById);
-router.put('/books/:bookId', authentication, authorization, updateByBookId);
+router.put('/books/:bookId', updateByBookId);
 router.delete('/books/:bookId', authentication, authorization, deleteBooksBYId);
 
 // Review routes
